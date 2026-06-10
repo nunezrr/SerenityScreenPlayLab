@@ -11,8 +11,8 @@ import net.thucydides.core.annotations.Step;
 import static net.serenitybdd.screenplay.matchers.WebElementStateMatchers.isVisible;
 
 /**
- * Task: hace clic en la primera cuenta del listado del dashboard
- * y espera a que la tabla de transacciones sea visible antes de continuar.
+ * Task: espera que el listado de cuentas del dashboard esté visible
+ * y hace clic en la primera cuenta. Luego espera la tabla de transacciones.
  */
 public class VerHistorialCuenta implements Task {
 
@@ -20,9 +20,11 @@ public class VerHistorialCuenta implements Task {
     @Step("{0} selecciona la primera cuenta y espera el historial de transacciones")
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(
+                WaitUntil.the(DashboardPage.FIRST_ACCOUNT_LINK, isVisible())
+                         .forNoMoreThan(15).seconds(),
                 Click.on(DashboardPage.FIRST_ACCOUNT_LINK),
                 WaitUntil.the(AccountDetailsPage.TRANSACTION_TABLE, isVisible())
-                         .forNoMoreThan(10).seconds()
+                         .forNoMoreThan(15).seconds()
         );
     }
 
