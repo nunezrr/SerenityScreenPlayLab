@@ -30,6 +30,9 @@ public class AbrirNuevaCuenta implements Task {
         WebDriver driver = BrowseTheWeb.as(actor).getDriver();
         driver.navigate().to(OPEN_ACCOUNT_URL);
 
+        // Espera explícita para que la sesión se estabilice en ParaBank
+        try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
+
         // Esperar formulario Angular
         actor.attemptsTo(
                 WaitUntil.the(AbrirNuevaCuentaPage.ACCOUNT_TYPE_SELECT, isVisible())
