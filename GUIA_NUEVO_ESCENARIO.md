@@ -102,6 +102,11 @@ Característica: Nombre de la funcionalidad
     Entonces ...
 ```
 
+> **Nota sobre credenciales:** Los features usan `"admin"/"admin"` como placeholder legible.
+> El `LoginSteps` reemplaza automáticamente estas credenciales por las del usuario registrado
+> dinámicamente en el `RegistroHook` (que corre una sola vez antes de toda la suite).
+> No necesitas cambiar las credenciales en los features.
+
 ### Ejemplo completo
 
 ```gherkin
@@ -360,13 +365,15 @@ public class VerHistorialCuenta implements Task {
 | Task | Factory method | Qué hace |
 |------|---------------|----------|
 | `AbrirParaBank` | `.loginPage()` | Abre la URL de login |
-| `IniciarSesion` | `.conCredenciales(u, p)` | Ingresa usuario, contraseña y hace clic en Login |
-| `NavegarATransferencia` | `.desdeElMenu()` | Clic en "Transfer Funds" |
+| `RegistrarNuevoUsuario` | `.enParaBank()` | Completa formulario de registro (UUID username) |
+| `AbrirNuevaCuenta` | `.tipoChecking()` | Crea cuenta CHECKING via `navigate().to()` |
+| `IniciarSesion` | `.conCredenciales(u, p)` | Login + WaitUntil dashboard visible |
+| `NavegarATransferencia` | `.desdeElMenu()` | WaitUntil enlace + clic Transfer Funds |
 | `SeleccionarCuentaOrigen` | `.disponible()` | Selecciona primera cuenta origen |
 | `SeleccionarCuentaDestino` | `.diferenteAlOrigen()` | Selecciona cuenta destino |
 | `IngresarMontoTransferencia` | `.de(monto)` | Limpia e ingresa monto en formulario |
 | `ConfirmarTransferencia` | `.haciencloClic()` | Clic en botón Transfer |
-| `VerHistorialCuenta` | `.deLaPrimeraCuenta()` | Clic en primera cuenta + espera tabla AJAX |
+| `VerHistorialCuenta` | `.deLaPrimeraCuenta()` | Clic en primera cuenta + WaitUntil tabla AJAX |
 
 ---
 
@@ -644,6 +651,8 @@ ElHistorial.tieneMovimientos()
 |---------|-------|
 | `TestRunner.java` | Detecta todos los features automáticamente — no necesita cambios |
 | `CucumberHooks.java` | Maneja el ciclo de vida del Actor — aplica a todos los escenarios |
+| `RegistroHook.java` | Setup: registra usuario y abre cuenta — corre solo 1 vez por suite |
+| `CredencialesUsuario.java` | Singleton de credenciales — no modificar |
 | `LoginSteps.java` | El `Antecedentes:` reutiliza estos steps — no duplicar |
 
 ### Qué SÍ crear al agregar un escenario nuevo
