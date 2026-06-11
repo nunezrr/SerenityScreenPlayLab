@@ -1,7 +1,6 @@
 package com.parabank.stepdefinitions;
 
 import com.parabank.model.CredencialesUsuario;
-import com.parabank.tasks.AbrirNuevaCuenta;
 import com.parabank.tasks.RegistrarNuevoUsuario;
 import io.cucumber.java.es.Dado;
 import io.cucumber.java.es.Cuando;
