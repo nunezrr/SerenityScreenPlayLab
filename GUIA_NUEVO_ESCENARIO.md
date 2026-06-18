@@ -575,7 +575,7 @@ public void haceClicEnConfirmar() { ... }
 ### 6.1 Compilar para detectar errores
 
 ```cmd
-gradlew.bat compileTestJava
+gradle compileTestJava
 ```
 
 Errores comunes y soluciones:

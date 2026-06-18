@@ -40,6 +40,15 @@ dependencies {
 
 test {
     testLogging.showStandardStreams = true
+
+    //Se usa solo para ejecutar los tests que terminan en Test o Runner, evitando ejecutar otros archivos 
+    //que puedan estar en el mismo paquete, evita ejecutar clases de soporte o utilidades que no son pruebas 
+    //como model/CredencialesUsuario.java
+    filter {
+        // Ejecuta solo lo que termine en Test o Runner
+        includeTestsMatching "*Test"
+        includeTestsMatching "*Runner"
+    }
 }
 
 serenity {
