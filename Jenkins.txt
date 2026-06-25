@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Copiar proyecto al workspace') {
+            steps {
+                bat """
+                xcopy "C:\\Users\\RNR\\OneDrive\\Escritorio\\Lite Thinking\\Cert02\\SerenityScreenPlayLab" "%WORKSPACE%" /E /I /Y
+                """
+            }
+        }
+
+        stage('Build & Test Serenity') {
+            steps {
+                dir("${WORKSPACE}") {
+                    bat 'gradle clean test aggregate'
+                }
+            }
+        }
+
+        stage('Validar reportes') {
+            steps {
+                bat 'dir target\\site\\serenity'
+                bat 'dir target\\site\\serenity\\*.json'
+            }
+        }
+
+        stage('Publicar Serenity') {
+            steps {
+                publishHTML([
+                    reportDir: 'target/site/serenity',
+                    reportFiles: 'index.html',
+                    reportName: 'Reporte Serenity',
+                    keepAll: true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: false
+                ])
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'target/site/serenity/**', fingerprint: true
+        }
+    }
+}

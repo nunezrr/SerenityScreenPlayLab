@@ -1,4 +1,5 @@
 # language: es
+
 Característica: Historial de cuenta
 
   Antecedentes:
@@ -6,6 +7,7 @@ Característica: Historial de cuenta
     Cuando ingresa el usuario "admin" y la contraseña "admin"
     Entonces el sistema muestra el dashboard de la cuenta
 
+  @historial
   Escenario: Visualizar el historial de transacciones de una cuenta
     Cuando el usuario selecciona una cuenta desde el listado
     Entonces el sistema muestra el historial de transacciones

@@ -10,9 +10,8 @@ import org.junit.runner.RunWith;
         glue = "com.parabank.stepdefinitions",
         plugin = {
                 "pretty",
-                "json:target/cucumber-reports/cucumber.json"
-        },
-        tags = "not @ignore"
+                "json:build/cucumber-reports/cucumber.json"
+        }
 )
 public class TestRunner {
 }

@@ -1,4 +1,5 @@
 # language: es
+
 Característica: Transferencia de fondos
 
   Antecedentes:
@@ -6,6 +7,7 @@ Característica: Transferencia de fondos
     Cuando ingresa el usuario "admin" y la contraseña "admin"
     Entonces el sistema muestra el dashboard de la cuenta
 
+  @transferencia
   Escenario: Transferir dinero entre cuentas exitosamente
     Cuando el usuario navega a la opción "Transfer Funds"
     Y selecciona la cuenta origen

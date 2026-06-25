@@ -39,7 +39,43 @@ dependencies {
 }
 
 test {
+    // Forzar el uso de JUnit 5 o JUnit 4 según tu versión (habitualmente JUnit 5 en Serenity 3.x/4.x)
+    //useJUnitPlatform()
+
     testLogging.showStandardStreams = true
+
+    // Pasa todas las propiedades del sistema desde la terminal a Serenity
+    systemProperties = System.properties
+
+    // Configuración indispensable para que Serenity localice las pruebas y arme el índice
+    systemProperty "serenity.test.root", "com.parabank"    
+    systemProperty "serenity.outputDirectory", "target/site/serenity"
+
+    // Forzar a Selenium a silenciar los logs de los Drivers y WebSockets
+    //systemProperty "org.slf4j.simpleLogger.defaultLogLevel", "error"
+    //systemProperty "webdriver.chrome.silentOutput", "true"
+
+    // Apagar logs específicos de Java Logging para Selenium
+    //java.util.logging.LogManager.getLogManager().reset()
+
+    // Forzar a Gradle a usar estas configuraciones de Chrome de forma nativa
+    systemProperty "webdriver.driver", "chrome"
+    systemProperty "chrome.switches", "--remote-allow-origins=* --start-maximized --incognito --disable-password-leak-detection --disable-popup-blocking"
+
+    // Indicarle a Cucumber que use el plugin de Serenity para reportar cada paso
+    systemProperty "cucumber.plugin", "io.cucumber.core.plugin.SerenityReporterParallel"
+
+    // Monitorear la salida en la consola de VS Code
+    testLogging {
+        events "passed", "skipped", "failed"
+
+        // Al remover u omitir "STANDARD_ERROR" de los events, 
+        // Gradle dejará de imprimir los mensajes nativos de WebSocket de Selenium
+        //showStandardStreams = false
+    }
+    
+    // Evita que un fallo de test detenga abruptamente la generación del reporte
+    ignoreFailures = true
 
     //Se usa solo para ejecutar los tests que terminan en Test o Runner, evitando ejecutar otros archivos 
     //que puedan estar en el mismo paquete, evita ejecutar clases de soporte o utilidades que no son pruebas 
@@ -49,8 +85,16 @@ test {
         includeTestsMatching "*Test"
         includeTestsMatching "*Runner"
     }
+
+    // 3. Forzar el apagado de logs de Java Util Logging en el arranque del proceso
+    //doFirst {
+    //    System.setProperty("org.openqa.selenium.remote.http.WebSocket", "OFF")
+    //}
 }
 
 serenity {
-    reports = ['single-page-html']
+    //reports = ['single-page-html']
+    testRoot = "com.parabank"
+    requirementsDir = "src/test/resources/features"
+    outputDirectory = "target/site/serenity"    
 }
